@@ -8,17 +8,20 @@ import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 import ezdxf
 from ezdxf import units
+from AFMReader.ibw import load_ibw
+
 
 #%%
-# This imports afm data from a txt file (can be changed)
-# in gwyddion go to file --> save as, and select the ASCII data matrix file type
-# (remember to type .txt in the filename when saving)
+# This imports afm data from a ibw file
+# (can load different types using AFMReader)
 
 filepath = 'C:\\Users\\...' #<-- enter file location
-filename = '.txt' #<--- enter file name
+filename = '.ibw' #<--- enter file name
+channel_name = 'HeightRetrace' #<--- select channel (if it doesnt exist it will show available ones)
 
-afm_array = pd.read_csv(filepath + filename,sep=None,engine='python') 
-afm_array = pd.DataFrame.to_numpy(afm_array)
+image,pixel_to_nm_scale = load_ibw(file_path=filepath+filename,channel=channel_name)
+afm_array = image
+
 
 #fix 0
 afm_array = afm_array - np.min(afm_array)
